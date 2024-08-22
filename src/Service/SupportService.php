@@ -92,7 +92,32 @@ class SupportService implements ServiceInterface
 
     public function editItem(object|array|null $requestBody, mixed $account): object|array|null
     {
-        return $requestBody;
+        $item =  $this->itemService->getItem( $requestBody['slug'] ,'slug');
+        $params = $item;
+        $params['time_update'] = time();
+        $requestBody['time_update'] =$params['time_update'];
+        $requestBody['time_update_view'] = $this->utilityService->date($requestBody['time_update']);
+        $params['history'][] = $requestBody;
+
+        ///TODO: handle change status of entity
+        if(isset($requestBody['order_status'])){
+            $params['order']['status'] = $requestBody['status'];
+        }
+
+        if(isset($requestBody['follow_up_date'])){
+            $params['follow_up_date'] = $requestBody['follow_up_date'];
+        }
+
+
+        $request =[
+          'slug' => $requestBody['slug'],
+          'id' => $requestBody['id'],
+          'information' => json_encode($params),
+          'time_update' => $params['time_update'],
+        ];
+
+        return $this->itemService->editItem($request);
+
     }
 
 }
