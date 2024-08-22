@@ -68,6 +68,9 @@ class SupportService implements ServiceInterface
             'status' => $requestBody['status'],
             'time_create' => $requestBody['time_create'],
         ];
+        $requestBody['history'][] =$requestBody;
+        $requestBody['conversation'] =[];
+
         $params['information'] = json_encode($requestBody);
         return $this->itemService->addItem($params,$account);
     }
