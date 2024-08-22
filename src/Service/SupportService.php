@@ -99,7 +99,6 @@ class SupportService implements ServiceInterface
         $requestBody['time_update_view'] = $this->utilityService->date($requestBody['time_update']);
         $params['history'][] = $requestBody;
 
-        ///TODO: handle change status of entity
         if(isset($requestBody['order_status'])){
             $params['order']['status'] = $requestBody['status'];
         }
