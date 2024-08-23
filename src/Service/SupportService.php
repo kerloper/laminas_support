@@ -68,7 +68,7 @@ class SupportService implements ServiceInterface
             'status' => $requestBody['status'],
             'time_create' => $requestBody['time_create'],
         ];
-        $requestBody['history'][] =$requestBody;
+        $requestBody['history'][] =array_merge(['owner_account'=>$this->accountService->getAccountProfile($account)??[]],$requestBody);
         $requestBody['conversation'] =[];
 
         $params['information'] = json_encode($requestBody);
@@ -95,16 +95,16 @@ class SupportService implements ServiceInterface
         $edit_type = $requestBody['edit_type'] ?? '';
         unset($requestBody['edit_type']);
         switch ($edit_type) {
-            case 'request_history':
+            case 'admin_request_history':
                 $item =  $this->itemService->getItem( $requestBody['slug'] ,'slug');
                 $params = $item;
                 $params['time_update'] = time();
                 $requestBody['time_update'] =$params['time_update'];
                 $requestBody['time_update_view'] = $this->utilityService->date($requestBody['time_update']);
-                $params['history'][] = $requestBody;
+                $params['history'][] = array_merge(['owner_account'=>$this->accountService->getAccountProfile($account)??[]],$requestBody);
 
                 if(isset($requestBody['order_status'])){
-                    $params['order']['status'] = $requestBody['status'];
+                    $params['order']['order_status'] = $requestBody['order_status'];
                 }
 
                 if(isset($requestBody['follow_up_date'])){
