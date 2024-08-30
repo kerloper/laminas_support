@@ -1,0 +1,48 @@
+<?php
+
+namespace Support\Handler\Api\Item;
+
+use Laminas\Diactoros\Response\JsonResponse;
+use Support\Service\SupportService;
+use Psr\Http\Message\ResponseFactoryInterface;
+use Psr\Http\Message\ResponseInterface;
+use Psr\Http\Message\ServerRequestInterface;
+use Psr\Http\Message\StreamFactoryInterface;
+use Psr\Http\Server\RequestHandlerInterface;
+
+class ItemListHandler implements RequestHandlerInterface
+{
+    /** @var ResponseFactoryInterface */
+    protected ResponseFactoryInterface $responseFactory;
+
+    /** @var StreamFactoryInterface */
+    protected StreamFactoryInterface $streamFactory;
+
+    /** @var SupportService */
+    protected SupportService $supportService;
+
+
+    public function __construct(
+        ResponseFactoryInterface $responseFactory,
+        StreamFactoryInterface   $streamFactory,
+        SupportService              $supportService
+    )
+    {
+        $this->responseFactory = $responseFactory;
+        $this->streamFactory = $streamFactory;
+        $this->supportService = $supportService;
+    }
+
+    public function handle(ServerRequestInterface $request): ResponseInterface
+    {
+        // Get request body
+        $requestBody = $request->getParsedBody();
+        $account = $request->getAttribute('account');
+        $requestBody['status'] = 1;
+        $requestBody['type'] = 'support';
+        $requestBody['support_customer_id'] = $account['id'];
+        $result = $this->supportService->getItemList($requestBody);
+
+        return new JsonResponse($result);
+    }
+}
