@@ -1,6 +1,6 @@
 <?php
 
-namespace Product\Handler;
+namespace Support\Handler;
 
 use Laminas\Diactoros\Response\JsonResponse;
 use Psr\Http\Message\ResponseFactoryInterface;
