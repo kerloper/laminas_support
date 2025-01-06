@@ -38,7 +38,7 @@ class ItemListHandler implements RequestHandlerInterface
         // Get request body
         $requestBody = $request->getParsedBody();
         $requestBody['status'] = 1;
-        $requestBody['type'] = 'support';
+        $requestBody['type'] = $requestBody['type']??'support';
         $result = $this->supportService->getItemList($requestBody);
 
         return new JsonResponse($result);

@@ -39,8 +39,11 @@ class ItemListHandler implements RequestHandlerInterface
         $requestBody = $request->getParsedBody();
         $account = $request->getAttribute('account');
         $requestBody['status'] = 1;
-        $requestBody['type'] = 'support';
-        $requestBody['support_customer_id'] = $account['id'];
+        $requestBody['type'] = $requestBody['type']??'support';
+        if($requestBody['type']!=='public-message'){
+            $requestBody['support_customer_id'] = $account['id'];
+        }
+
         $result = $this->supportService->getItemList($requestBody);
 
         return new JsonResponse($result);

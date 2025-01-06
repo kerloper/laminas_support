@@ -38,7 +38,7 @@ class ItemUpdateHandler implements RequestHandlerInterface
         // Get request body
         $account = $request->getAttribute('account');
         $requestBody = $request->getParsedBody();
-        $requestBody['type'] = 'support';
+        $requestBody['type'] = $requestBody['type']??'support';
         $requestBody["user_id"] =  $account['id'];
         $result = $this->supportService->updateItem($requestBody,$account);
         $result = [

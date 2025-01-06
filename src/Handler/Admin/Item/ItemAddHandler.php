@@ -39,8 +39,16 @@ class ItemAddHandler implements RequestHandlerInterface
         $account = $request->getAttribute('account');
         $requestBody = $request->getParsedBody();
         $requestBody['status'] = '1';
-        $requestBody['type'] = 'support';
+        $requestBody['type'] = $requestBody['type']??'support';
         $requestBody["user_id"] =  $account['id'];
+
+        if($requestBody['type']=="ticket"&& ($requestBody['send_from']??'')=="admin"){
+            if(isset($requestBody['customer'])){
+                if(isset($requestBody['customer']['id'])){ 
+                    $requestBody["user_id"] =  $requestBody['customer']['id'];
+                }
+            }
+        }
         $result = $this->supportService->addItem($requestBody,$account);
         $result = [
             'result' => true,

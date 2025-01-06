@@ -131,6 +131,16 @@ class SupportService implements ServiceInterface
                 ];
                 break;
 
+            case 'change_status':
+                $request = [
+                    'slug' => $item['slug'],
+                    'id' => $item['id'],
+                    'status' => $requestBody['status'],
+                    'information' => json_encode($params),
+                    'time_update' => $params['time_update'],
+                ];
+                break;
+
             default:
                 $request = [
                     'slug' => $requestBody['slug'],
@@ -138,7 +148,7 @@ class SupportService implements ServiceInterface
         }
 
         $this->itemService->editItem($request);
-        return $this->getItem(['type' => 'slug', 'slug' => $item['slug'] ?? '']);
+        return $request;//$this->getItem(['type' => 'slug', 'slug' => $item['slug'] ?? '']);
 
     }
 

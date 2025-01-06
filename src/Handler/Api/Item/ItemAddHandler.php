@@ -39,7 +39,7 @@ class ItemAddHandler implements RequestHandlerInterface
         $account = $request->getAttribute('account');
         $requestBody = $request->getParsedBody();
         $requestBody['status'] = '1';
-        $requestBody['type'] = 'support';
+        $requestBody['type'] = $requestBody['type']??'support';
         $requestBody["user_id"] =  $account['id'];
         $result = $this->supportService->addItem($requestBody,$account);
         $result = [
